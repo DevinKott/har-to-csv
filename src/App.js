@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import filesaver from 'file-saver'
 
+import Uploader from './UploaderComponent'
+
 function App() {
     const [obj, setObj] = useState(null);
     const [includes, setIncludes] = useState([]);
@@ -54,10 +56,7 @@ function App() {
         <Root>
             <Container>
                 <h1>har-to-csv</h1>
-                <section>
-                    <span>Click the following to load a HAR file:</span>
-                    <input type="file" accept=".har" onChange={uploadFile}/>
-                </section>
+                <Uploader setObj={setObj}/>
                 <section>
                     Entries: {isValid(obj) ? `${obj['log']['entries'].length}` : '0'}
                 </section>
