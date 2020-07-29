@@ -3,33 +3,12 @@ import styled from 'styled-components';
 import filesaver from 'file-saver'
 
 import Uploader from './UploaderComponent'
+import Filter from './FilterComponent'
 
 function App() {
     const [obj, setObj] = useState(null);
     const [includes, setIncludes] = useState([]);
     const [filter, setFilter] = useState("")
-
-    const uploadFile = (e) => {
-        const file = e.target.files[0];
-        if (!isValid(file)) {
-            console.error(`Error reading file.`);
-            return;
-        }
-
-        const reader = new FileReader();
-        reader.onload = async (readerE) => {
-            const text = readerE.target.result;
-            try {
-                const jsonObj = JSON.parse(text);
-                setObj(jsonObj);
-            } catch (exception) {
-                console.error(`Exception occurred while reading HAR file.`)
-                console.error(exception)
-            }
-        }
-
-        reader.readAsText(file)
-    }
 
     const buttons = []
 
@@ -57,18 +36,7 @@ function App() {
             <Container>
                 <h1>har-to-csv</h1>
                 <Uploader setObj={setObj}/>
-                <section>
-                    Entries: {isValid(obj) ? `${obj['log']['entries'].length}` : '0'}
-                </section>
-                <section>
-                    URL Filter: <input type='text' onChange={(e) => {
-                        if (e.target.value) {
-                            setFilter(e.target.value);
-                        } else {
-                            setFilter("")
-                        }
-                    }} />
-                </section>
+                <Filter setFilter={setFilter}/>
                 <section>
                     <span>Include in CSV:</span>
                     <div>
