@@ -4,7 +4,6 @@
         "eslint:recommended",
         "plugin:react/recommended",
         "plugin:import/recommended",
-        "prettier"
     ],
     "settings": {
         "react": {
@@ -14,20 +13,13 @@
     },
     "plugins": [
         "import",
-        "react",
-        "prettier"
+        "react"
     ],
     "env": {
         "browser": true
     },
     "rules": {
-        "prettier/prettier": [
-            "error",
-            {
-                "singleQuote": true,
-                "trailingComma": "es5"
-            }
-        ],
-        "prefer-const": 2
+        "prefer-const": 2,
+        "indent": ["error", 4]
     }
 }
