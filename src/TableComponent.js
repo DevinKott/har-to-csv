@@ -1,10 +1,10 @@
 import React from 'react'
 import styled from 'styled-components'
 import { useTable } from 'react-table'
+import { isValid } from './Utils'
 
 function Table(props) {
     const entries = props.entries || [];
-    console.log(entries)
 
     const columns = React.useMemo(
         () => [
@@ -37,11 +37,34 @@ function Table(props) {
     if (entries.length !== 0) {
         entries.forEach(
             (entry) => {
-                const status = entry[`response`][`status`];
-                const method = entry[`request`][`method`];
-                const url = entry[`request`][`url`];
-                const size = entry[`response`][`bodySize`];
-                const time = entry[`time`];
+                const req = entry[`request`];
+                const res = entry[`response`];
+
+                const time = entry[`time`] || '';
+                let status = '';
+                let method = '';
+                let url = '';
+                let size = '';
+
+                if (isValid(res)) {
+                    if (isValid(res['status'])) {
+                        status = res['status'];
+                    }
+
+                    if (isValid(res['bodySize'])) {
+                        size = res[`bodySize`];
+                    }
+                }
+
+                if (isValid(req)) {
+                    if (isValid(req['method'])) {
+                        method = req['method'];
+                    }
+                    
+                    if (isValid(req['url'])) {
+                        url = req['url'];
+                    }
+                }
 
                 dataForMemo.push(
                     {
@@ -131,13 +154,15 @@ const Root = styled.section`
 `
 
 const TableStyle = styled.table`
-    border: 1px solid blue;
+    border: 1px solid rgba(1, 1, 1, 0.1);
+    padding: 0.2rem;
 `
 
 const TableHeader = styled.th`
     background: aliceblue;
     color: black;
     font-weight: bold;
+    padding: 0.2rem 0.5rem 0.2rem 0.5rem;
 `
 
 const TableData = styled.td`
