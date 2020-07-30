@@ -81,6 +81,7 @@ const Root = styled.section`
     flex-direction: row;
 
     justify-content: space-between;
+    margin-top: 1rem;
 `
 
 export default Uploader;
