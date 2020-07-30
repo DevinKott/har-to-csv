@@ -3,6 +3,9 @@ import styled from 'styled-components'
 import { useTable } from 'react-table'
 import { isValid } from './Utils'
 
+const LIMIT = 50;
+const BreakException = {};
+
 function Table(props) {
     const entries = props.entries || [];
 
@@ -35,48 +38,56 @@ function Table(props) {
     let dataForMemo = [];
 
     if (entries.length !== 0) {
-        entries.forEach(
-            (entry) => {
-                const req = entry[`request`];
-                const res = entry[`response`];
-
-                const time = entry[`time`] || '';
-                let status = '';
-                let method = '';
-                let url = '';
-                let size = '';
-
-                if (isValid(res)) {
-                    if (isValid(res['status'])) {
-                        status = res['status'];
+        try {
+            entries.forEach(
+                (entry, index) => {
+                    if (index >= LIMIT) {
+                        throw BreakException;
                     }
 
-                    if (isValid(res['bodySize'])) {
-                        size = res[`bodySize`];
+                    const req = entry[`request`];
+                    const res = entry[`response`];
+    
+                    const time = entry[`time`] || '';
+                    let status = '';
+                    let method = '';
+                    let url = '';
+                    let size = '';
+    
+                    if (isValid(res)) {
+                        if (isValid(res['status'])) {
+                            status = res['status'];
+                        }
+    
+                        if (isValid(res['bodySize'])) {
+                            size = res[`bodySize`];
+                        }
                     }
+    
+                    if (isValid(req)) {
+                        if (isValid(req['method'])) {
+                            method = req['method'];
+                        }
+                        
+                        if (isValid(req['url'])) {
+                            url = req['url'];
+                        }
+                    }
+    
+                    dataForMemo.push(
+                        {
+                            status: `${status}`,
+                            method: `${method}`,
+                            size: `${size}`,
+                            time: `${time}`,
+                            url: `${url}`
+                        }
+                    )
                 }
-
-                if (isValid(req)) {
-                    if (isValid(req['method'])) {
-                        method = req['method'];
-                    }
-                    
-                    if (isValid(req['url'])) {
-                        url = req['url'];
-                    }
-                }
-
-                dataForMemo.push(
-                    {
-                        status: `${status}`,
-                        method: `${method}`,
-                        size: `${size}`,
-                        time: `${time}`,
-                        url: `${url}`
-                    }
-                )
-            }
-        );
+            );
+        } catch (e) {
+            if (e !== BreakException) throw e;
+        }
     }
 
     const data = dataForMemo;
@@ -139,6 +150,15 @@ function Table(props) {
                     }
                 </tbody>
             </TableStyle>
+            {
+                entries.length > LIMIT &&
+                <h3>
+                    Too many entries were detected. Only showing {LIMIT} (out of {' '}
+                    {entries.length}) entries.
+                    When exporting, ALL entries (even those not shown) will be included
+                    in the CSV file.
+                </h3>
+            }
         </Root>
     );
 }
@@ -146,6 +166,7 @@ function Table(props) {
 const Root = styled.section`
     display: flex;
     justify-content: center;
+    flex-direction: column;
     margin-top: 1rem;
 
     h2 {
