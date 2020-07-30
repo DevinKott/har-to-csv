@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import isValid from './Utils'
+import { isValid } from './Utils'
 
 function Filter(props) {
     const defaultChangeFilter = () => {
