@@ -17,6 +17,8 @@ You can visit a live version at [https://har.devinkott.com/](https://har.devinko
 1. Add better meta tags
 2. Add more attributes
 3. Add list to select the attributes you want in the csv
+4. Fix "Time" column: .toFixed(2)
+5. Limit the URL or resize the table correctly (max-width?)
 
 
 ## Versions
