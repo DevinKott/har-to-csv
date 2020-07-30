@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import styled from 'styled-components'
 
 import { isValid } from './Utils'
@@ -48,5 +49,9 @@ const Root = styled.section`
 
     margin-top: 1rem;
 `
+
+Filter.propTypes = {
+    setFilter: PropTypes.func
+}
 
 export default Filter;

@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { useTable } from 'react-table'
 import { isValid } from './Utils'
@@ -35,7 +36,7 @@ function Table(props) {
         []
     );
     
-    let dataForMemo = [];
+    const dataForMemo = [];
 
     if (entries.length !== 0) {
         try {
@@ -114,10 +115,10 @@ function Table(props) {
         <Root>
             <TableStyle {...getTableProps()} style={{}}>
                 <thead>
-                    {headerGroups.map(headerGroup => (
-                        <tr {...headerGroup.getHeaderGroupProps()}>
-                            {headerGroup.headers.map(column => (
-                                <TableHeader {...column.getHeaderProps()}>
+                    {headerGroups.map((headerGroup, headerIndex) => (
+                        <tr key={`tr-${headerIndex}`} {...headerGroup.getHeaderGroupProps()}>
+                            {headerGroup.headers.map((column, iA) => (
+                                <TableHeader key={`th-${iA}`} {...column.getHeaderProps()}>
                                     {column.render('Header')}
                                 </TableHeader>
                             ))}
@@ -127,16 +128,16 @@ function Table(props) {
                 <tbody {...getTableBodyProps()}>
                     {
                         rows.map(
-                            (row) => {
+                            (row, rI) => {
                                 prepareRow(row);
                                 
                                 return (
-                                    <tr {... row.getRowProps()}>
+                                    <tr key={`row-${rI}`} {... row.getRowProps()}>
                                         {
                                             row.cells.map(
-                                                (cell) => {
+                                                (cell, cI) => {
                                                     return (
-                                                        <TableData {... cell.getCellProps()}>
+                                                        <TableData key={`cell-${cI}`} {... cell.getCellProps()}>
                                                             {cell.render('Cell')}
                                                         </TableData>
                                                     )
@@ -190,5 +191,9 @@ const TableData = styled.td`
     padding: 5px;
     border-bottom: 1px solid rgba(1, 1, 1, 0.1);
 `
+
+Table.propTypes = {
+    entries: PropTypes.array
+}
 
 export default Table;

@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { isValid } from './Utils'
 
@@ -83,5 +84,8 @@ const Root = styled.section`
     justify-content: space-between;
     margin-top: 1rem;
 `
+Uploader.propTypes = {
+    setObj: PropTypes.func
+}
 
 export default Uploader;

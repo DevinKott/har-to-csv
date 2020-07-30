@@ -29,7 +29,7 @@ function App() {
         <Root>
             <Container>
                 <h1>har-to-csv</h1>
-                <h3>The HTTP Archive format, or HAR, is a JSON-formatted archive file format for logging of a web browser's interaction with a site.</h3>
+                <h3>The HTTP Archive format, or HAR, is a JSON-formatted archive file format for logging of a web browser&apos;s interaction with a site.</h3>
                 <h3>The table shown is exported to CSV format with a comma as a delimiter.</h3>
                 <h3>Made by Devin Kott.</h3>
                 <h5>Version 1.0: Initial (07/29/2020)</h5>

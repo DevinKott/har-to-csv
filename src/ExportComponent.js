@@ -1,9 +1,10 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { saveText, isValid } from './Utils';
 
 function Export(props) {
-    let entries = props.entries || [];
+    const entries = props.entries || [];
 
     const click = () => {
         const rows = [['Status', 'Method', 'Size', 'Time', 'URL'].join(',')]
@@ -69,5 +70,9 @@ const Root = styled.section`
 
     margin-top: 1rem;
 `
+
+Export.propTypes = {
+    entries: PropTypes.array
+}
 
 export default Export;
