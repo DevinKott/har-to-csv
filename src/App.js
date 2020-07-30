@@ -4,6 +4,7 @@ import filesaver from 'file-saver'
 
 import Uploader from './UploaderComponent'
 import Filter from './FilterComponent'
+import Table from './TableComponent'
 
 function App() {
     const [obj, setObj] = useState(null);
@@ -30,6 +31,20 @@ function App() {
             }
         }
     }
+
+    let entries = [];
+    if (isValid(obj) && isValid(obj['log'] && isValid(obj['log']['entries']))) {
+        entries = obj['log']['entries'];
+    }
+
+    if (entries.length > 0 && filter !== '') {
+        entries = entries.filter(
+            (entry) => {
+                return entry['request']['url'].includes(filter);
+            }
+        );
+    }
+
     
     return (
         <Root>
@@ -37,42 +52,7 @@ function App() {
                 <h1>har-to-csv</h1>
                 <Uploader setObj={setObj}/>
                 <Filter setFilter={setFilter}/>
-                <section>
-                    <span>Include in CSV:</span>
-                    <div>
-                        {
-                            buttons.length > 0 &&
-                            buttons.map(
-                                (button, index) => {
-                                    return (
-                                        <button key={`key-in-file-${index}`} onClick={
-                                            () => {
-                                                if (includes.includes(button)) {
-                                                    const tempIncludes = []
-                                                    includes.filter(b => b !== button).forEach(b => tempIncludes.push(b));
-                                                    setIncludes(tempIncludes);
-                                                } else {
-                                                    const tempIncludes = [button];
-                                                    includes.forEach(b => tempIncludes.push(b));
-                                                    setIncludes(tempIncludes)
-                                                }
-                                            }
-                                        }>{button}</button>
-                                    )
-                                }
-                            )
-                        }
-                    </div>
-                    <ul>
-                        {
-                            includes.map(
-                                (str, index) => {
-                                    return <li key={`include-list-${index}`}>{str}</li>
-                                }
-                            )
-                        }
-                    </ul>
-                </section>
+                <Table entries={entries}/>
                 <section>
                     <button
                         onClick={
